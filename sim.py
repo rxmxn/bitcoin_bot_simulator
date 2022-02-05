@@ -6,7 +6,7 @@ class Config:
     safety_order_size=20.0
     target_profit_perc=1.0
     price_deviation_safety_orders=0.5
-    max_safety_trades_count=10
+    max_safety_trades_count=100 # this one should be estimated based on the max # of buys
     safety_order_volume_scale=2.0
     safety_order_step_scale=1.0
 
@@ -141,20 +141,30 @@ if __name__ == '__main__':
     totals = []
     book = {}
 
-    for base_order_size in range(10, 20, 5):
-        for safety_order_size in range(10, 20, 5):
-            for target_profit_perc in range(1, 10, 10):
-                config = Config()
-                config.base_order_size=base_order_size
-                config.safety_order_size=safety_order_size
-                config.target_profit_perc=target_profit_perc/10
-                total = run(prices, dates, config)
-                totals.append(int(total))
-                book[int(total)] = config
+    for base_order_size in range(10, 21, 5):
+        for safety_order_size in range(10, 21, 5):
+            for target_profit_perc in range(1, 100, 1):
+                for price_deviation_safety_orders in range(5, 50, 1):
+                    for safety_order_volume_scale in range(100, 300, 1):
+                        for safety_order_step_scale in range(50, 300, 1):
+                            config = Config()
+                            config.base_order_size=base_order_size
+                            config.safety_order_size=safety_order_size
+                            config.target_profit_perc=target_profit_perc/10                                
+                            config.price_deviation_safety_orders=price_deviation_safety_orders/10
+                            config.safety_order_volume_scale=safety_order_volume_scale/100
+                            config.safety_order_step_scale=safety_order_step_scale/100
+                                
+                            total = run(prices, dates, config)
+                            totals.append(int(total))
+                            book[int(total)] = config
 
-    print(totals)
+    #print(totals)
     print(max(totals))
     best = book[max(totals)]
     print("Base Order Size: $%.2f" % best.base_order_size)
     print("Safety Order Size: $%.2f" % best.safety_order_size)
     print("Target Profit Perc: %.1f%%" % best.target_profit_perc)
+    print("Price Deviation Safety Orders: %.2f" % best.price_deviation_safety_order)
+    print("Safety Order Volume Scale: %.2f" % best.safety_order_volume_scale)
+    print("Safety Order Step Scale: %.2f" % best.safety_order_step_scale)
