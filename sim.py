@@ -165,6 +165,6 @@ if __name__ == '__main__':
     print("Base Order Size: $%.2f" % best.base_order_size)
     print("Safety Order Size: $%.2f" % best.safety_order_size)
     print("Target Profit Perc: %.1f%%" % best.target_profit_perc)
-    print("Price Deviation Safety Orders: %.2f" % best.price_deviation_safety_order)
+    print("Price Deviation Safety Orders: %.2f" % best.price_deviation_safety_orders)
     print("Safety Order Volume Scale: %.2f" % best.safety_order_volume_scale)
     print("Safety Order Step Scale: %.2f" % best.safety_order_step_scale)
