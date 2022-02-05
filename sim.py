@@ -1,28 +1,23 @@
 import pandas as pd
-from datetime import datetime, timedelta
+from datetime import datetime
+
+class Config:
+    base_order_size=10.0
+    safety_order_size=20.0
+    target_profit_perc=1.0
+    price_deviation_safety_orders=0.5
+    max_safety_trades_count=10
+    safety_order_volume_scale=2.0
+    safety_order_step_scale=1.0
 
 class Bot:
     def __init__(self,
-        base_order_size=10.0,
-        safety_order_size=20.0,
-        target_profit_perc=1.0,
-        price_deviation_safety_orders=0.5,
-        max_safety_trades_count=10,
-        safety_order_volume_scale=2.0,
-        safety_order_step_scale=1.0,
+        config=Config(),
         verbose=False) -> None:
-            self.base_order_size=base_order_size
-            self.safety_order_size=safety_order_size
-            self.target_profit_perc=target_profit_perc
-            self.price_deviation_safety_orders=price_deviation_safety_orders
-            self.max_safety_trades_count=max_safety_trades_count
-            self.safety_order_volume_scale=safety_order_volume_scale
-            self.safety_order_step_scale=safety_order_step_scale
-
+            self.config = config
             self.initial_usd = 1000.0
             self.total_usd = 1000.0
             self.total_btc = 0
-
             self.verbose = verbose
 
     def buy(self, amount_usd, price, date):
@@ -45,14 +40,14 @@ class Bot:
         return self.total_usd - self.initial_usd
 
     def simulate(self, prices, dates, start_index):
-        order_volume_usd = total_volume_usd = self.base_order_size
+        order_volume_usd = total_volume_usd = self.config.base_order_size
         amount_btc = self.buy(order_volume_usd, prices[start_index], dates[start_index])
         bought_price = prices[start_index]
         safety_trades_count = 0
-        price_deviation_safety_orders = self.price_deviation_safety_orders
+        price_deviation_safety_orders = self.config.price_deviation_safety_orders
 
         # after the first buy, the next order will be the first safety one
-        order_volume_usd = self.safety_order_size
+        order_volume_usd = self.config.safety_order_size
 
         for index, price in enumerate(prices):
             index += start_index
@@ -63,7 +58,7 @@ class Bot:
             #print("Current value in USD=$%.2f | Price=$%.2f" %(current_value_usd, price))
 
             profit = current_value_usd - total_volume_usd
-            expected_profit = total_volume_usd * self.target_profit_perc / 100
+            expected_profit = total_volume_usd * self.config.target_profit_perc / 100
 
             if profit >= expected_profit:
                 if self.verbose:
@@ -73,7 +68,7 @@ class Bot:
                     print("Profit=$%f | Expected Profit=$%f" %(profit, expected_profit))
                 return index, amount_usd
 
-            if safety_trades_count >= self.max_safety_trades_count:
+            if safety_trades_count >= self.config.max_safety_trades_count:
                 if self.verbose:
                     print("Safety Trades Count reached %d, now it's just a waiting game" %(safety_trades_count))
                 continue
@@ -83,9 +78,9 @@ class Bot:
                     amount_btc += self.buy(order_volume_usd, price, dates[index])
                     bought_price = price
                     total_volume_usd += order_volume_usd
-                    order_volume_usd *= self.safety_order_volume_scale
+                    order_volume_usd *= self.config.safety_order_volume_scale
                     safety_trades_count += 1
-                    price_deviation_safety_orders *= self.safety_order_step_scale
+                    price_deviation_safety_orders *= self.config.safety_order_step_scale
                 else:
                     continue
 
@@ -121,22 +116,8 @@ def find_index(dates, years=0):
             return i
 
 
-def run(prices, dates,
-        base_order_size=10.0,
-        safety_order_size=20.0,
-        target_profit_perc=1.0,
-        price_deviation_safety_orders=0.5,
-        max_safety_trades_count=10,
-        safety_order_volume_scale=2.0,
-        safety_order_step_scale=1.0):
-
-    bot = Bot(base_order_size=base_order_size,
-        safety_order_size=safety_order_size,
-        target_profit_perc=target_profit_perc,
-        price_deviation_safety_orders=price_deviation_safety_orders,
-        max_safety_trades_count=max_safety_trades_count,
-        safety_order_volume_scale=safety_order_volume_scale,
-        safety_order_step_scale=safety_order_step_scale)
+def run(prices, dates, config):
+    bot = Bot(config)
 
     bot.execute(prices, dates)
 
@@ -153,11 +134,27 @@ def run(prices, dates,
 if __name__ == '__main__':
     df = pd.read_csv('btcalphaUSD.csv')
     dates = df.iloc[:, 0]
-    end_index = find_index(dates, 0)
+    end_index = find_index(dates, 1)
     prices = df.iloc[:end_index, 1]
     #print(datetime.fromtimestamp(dates[len(prices)]).date())
 
     totals = []
-    total = run(prices, dates)
-    totals.append(total)
+    book = {}
+
+    for base_order_size in range(10, 20, 5):
+        for safety_order_size in range(10, 20, 5):
+            for target_profit_perc in range(1, 10, 10):
+                config = Config()
+                config.base_order_size=base_order_size
+                config.safety_order_size=safety_order_size
+                config.target_profit_perc=target_profit_perc/10
+                total = run(prices, dates, config)
+                totals.append(int(total))
+                book[int(total)] = config
+
     print(totals)
+    print(max(totals))
+    best = book[max(totals)]
+    print("Base Order Size: $%.2f" % best.base_order_size)
+    print("Safety Order Size: $%.2f" % best.safety_order_size)
+    print("Target Profit Perc: %.1f%%" % best.target_profit_perc)
