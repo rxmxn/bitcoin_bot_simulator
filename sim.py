@@ -4,11 +4,11 @@ from datetime import datetime
 class Bot:
     def __init__(self,
         base_order_size=10.0,
-        safety_order_size=20.0,
+        safety_order_size=30.0,
         target_profit_perc=10.0,
         price_deviation_safety_orders=0.5,
         max_safety_trades_count=10,
-        safety_order_volume_scale=2.0,
+        safety_order_volume_scale=3.0,
         safety_order_step_scale=1.0) -> None:
             self.base_order_size=base_order_size
             self.safety_order_size=safety_order_size
@@ -71,7 +71,7 @@ class Bot:
                 continue
 
             if price <= bought_price  * ( 1 - price_deviation_safety_orders / 100):
-                if total_volume_usd <= self.total_usd:
+                if order_volume_usd <= self.total_usd:
                     amount_btc += self.buy(order_volume_usd, price, dates[index])
                     bought_price = price
                     total_volume_usd += order_volume_usd
