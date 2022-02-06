@@ -1,14 +1,33 @@
 from datetime import datetime
 
 class Config:
-    base_order_size=10.0
-    safety_order_size=20.0
-    target_profit_perc=1.0
-    price_deviation_safety_orders=0.5
-    safety_order_volume_scale=2.0
-    safety_order_step_scale=1.0
-    safety_trades_count=0 
-    closed_deals_count=0
+    def __init__(self,
+        base_order_size=10.0,
+        safety_order_size=20.0,
+        target_profit_perc=1.0,
+        price_deviation_safety_orders=0.5,
+        safety_order_volume_scale=2.0,
+        safety_order_step_scale=1.0,
+        safety_trades_count=0,
+        closed_deals_count=0) -> None:
+            self.base_order_size = base_order_size
+            self.safety_order_size=safety_order_size
+            self.target_profit_perc=target_profit_perc
+            self.price_deviation_safety_orders=price_deviation_safety_orders
+            self.safety_order_volume_scale=safety_order_volume_scale
+            self.safety_order_step_scale=safety_order_step_scale
+            self.safety_trades_count=safety_trades_count
+            self.closed_deals_count=closed_deals_count
+        
+    def __str__(self) -> str:
+        print("Base Order Size: $%.2f" % self.base_order_size)
+        print("Safety Order Size: $%.2f" % self.safety_order_size)
+        print("Target Profit Perc: %.1f%%" % self.target_profit_perc)
+        print("Price Deviation Safety Orders: %.2f" % self.price_deviation_safety_orders)
+        print("Safety Order Volume Scale: %.2f" % self.safety_order_volume_scale)
+        print("Safety Order Step Scale: %.2f" % self.safety_order_step_scale)
+        print("Safety Trades Count: %d" % self.safety_trades_count)
+        print("Number of closed deals: %d" % self.closed_deals_count)
 
 class Bot:
     def __init__(self,

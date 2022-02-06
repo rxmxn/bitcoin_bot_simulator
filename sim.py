@@ -68,6 +68,7 @@ if __name__ == '__main__':
 
     config = Config()
     total = run(prices, dates, config)
+    config.closed_deals_count = 1
     totals.append(int(total))
     book[int(total)] = config
 
