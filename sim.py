@@ -37,7 +37,7 @@ def run(prices, dates, config, verbose = False):
 if __name__ == '__main__':
     df = pd.read_csv('btcalphaUSD.csv')
     dates = df.iloc[:, 0]
-    end_index = find_index(dates, 1)
+    end_index = find_index(dates, 0)
     prices = df.iloc[:end_index, 1]
     #print(datetime.fromtimestamp(dates[len(prices)]).date())
 
@@ -68,7 +68,6 @@ if __name__ == '__main__':
 
     config = Config()
     total = run(prices, dates, config)
-    config.closed_deals_count = 1
     totals.append(int(total))
     book[int(total)] = config
 
@@ -83,5 +82,9 @@ if __name__ == '__main__':
     print("Safety Order Step Scale: %.2f" % best.safety_order_step_scale)
     print("Safety Trades Count: %d" % best.safety_trades_count)
     print("Number of closed deals: %d" % best.closed_deals_count)
+    print("Max Safety Order Price Deviation: %.2f%%" % best.max_safety_order_price_deviation())
+    print("Max Real Safety Order Price Deviation: %.2f%%" % best.max_real_safety_order_price_deviation)
+    print("Max Price Deviation: %.2f%%" % best.max_price_deviation)
+    print("Top to Bottom Price Deviation: %.2f%%" % (100 - (min(prices) * 100 / max(prices))))
 
 #    print(i)
