@@ -37,35 +37,46 @@ def run(prices, dates, config, verbose = False):
 if __name__ == '__main__':
     df = pd.read_csv('btcalphaUSD.csv')
     dates = df.iloc[:, 0]
-    end_index = find_index(dates, 0)
+    end_index = find_index(dates, 1)
     prices = df.iloc[:end_index, 1]
     #print(datetime.fromtimestamp(dates[len(prices)]).date())
 
     totals = []
     book = {}
-    #i = 0
+    i = 0
 
+    #TODO: need to store more than 1 {result: Config} to have different similar alternatives
+    #TODO: need to store the less risky ones as well
+
+    # Comment this to run it quicly with just one simulation
+    # order_array = [10, 15, 20]
+    # target_profit_perc_array = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 5, 10]
+    # price_deviation_safety_orders_array = [0.5, 1, 1.5, 2]
+    # safety_order_volume_scale_array = [1.05, 1.1, 1.5, 2, 2.5, 3]
+    # safety_order_step_scale_array = [0.9, 1, 1.1, 1.2, 1.3]
     # TODO: Search from bigger ranges to smaller ones, diving by 2 each time it's cut (binary search)
-#     for base_order_size in range(10, 21, 5):
-#         for safety_order_size in range(10, 21, 5):
-#             for target_profit_perc in range(1, 21, 10):
-#                 for price_deviation_safety_orders in range(5, 20, 5):
-#                     for safety_order_volume_scale in range(100, 201, 10):
-#                         for safety_order_step_scale in range(90, 150, 10):
-# #                            i += 1
-#                             config = Config()
-#                             config.base_order_size=base_order_size
-#                             config.safety_order_size=safety_order_size
-#                             config.target_profit_perc=target_profit_perc/10                                
-#                             config.price_deviation_safety_orders=price_deviation_safety_orders/10
-#                             config.safety_order_volume_scale=safety_order_volume_scale/100
-#                             config.safety_order_step_scale=safety_order_step_scale/100                         
-#                             config.closed_deals_count += 1
+    # for base_order_size in order_array:
+    #     for safety_order_size in order_array:
+    #         for target_profit_perc in target_profit_perc_array:
+    #             for price_deviation_safety_orders in price_deviation_safety_orders_array:
+    #                 for safety_order_volume_scale in safety_order_volume_scale_array:
+    #                     for safety_order_step_scale in safety_order_step_scale_array:
+    #                         i += 1
+    #                         config = Config()
+    #                         config.base_order_size=base_order_size
+    #                         config.safety_order_size=safety_order_size
+    #                         config.target_profit_perc=target_profit_perc                                
+    #                         config.price_deviation_safety_orders=price_deviation_safety_orders
+    #                         config.safety_order_volume_scale=safety_order_volume_scale
+    #                         config.safety_order_step_scale=safety_order_step_scale                         
                              
-#                             total = run(prices, dates, config)
-#                             totals.append(int(total))
-#                             book[int(total)] = config
+    #                         total = run(prices, dates, config)
+    #                         totals.append(int(total))
+    #                         book[int(total)] = config
 
+    #                         print("%d/9720 : $%.2f" % (i, total))
+
+    # Uncomment this to run it once with the default parameters set in Config
     config = Config()
     total = run(prices, dates, config)
     totals.append(int(total))
@@ -87,4 +98,4 @@ if __name__ == '__main__':
     print("Max Price Deviation: %.2f%%" % best.max_price_deviation)
     print("Top to Bottom Price Deviation: %.2f%%" % (100 - (min(prices) * 100 / max(prices))))
 
-#    print(i)
+    # print(i)
