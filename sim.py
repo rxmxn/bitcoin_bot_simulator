@@ -86,11 +86,12 @@ if __name__ == '__main__':
 
                             print("%d/%d : $%.2f" % (i, total_combinations, config.total))
 
+    # order by less risk
     print("\n-------------------------------------")
     for deviation in reversed(sorted(price_deviations, reverse=True)[0:10]):
         print(book_low_risk[deviation])
 
+    # order by most profit
     print("\n-------------------------------------")
     for total in reversed(sorted(totals, reverse=True)[0:10]):
         print(book[total])
-
