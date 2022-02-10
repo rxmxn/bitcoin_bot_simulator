@@ -42,60 +42,54 @@ if __name__ == '__main__':
     #print(datetime.fromtimestamp(dates[len(prices)]).date())
 
     totals = []
-    book = {}
+    book = dict[int, Config]()
     i = 0
 
-    #TODO: need to store more than 1 {result: Config} to have different similar alternatives
     #TODO: need to store the less risky ones as well
 
     # Comment this to run it quicly with just one simulation
+    #TODO: Search from bigger ranges to smaller ones, diving by 2 each time it's cut (binary search)
     # order_array = [10, 15, 20]
     # target_profit_perc_array = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 5, 10]
     # price_deviation_safety_orders_array = [0.5, 1, 1.5, 2]
     # safety_order_volume_scale_array = [1.05, 1.1, 1.5, 2, 2.5, 3]
     # safety_order_step_scale_array = [0.9, 1, 1.1, 1.2, 1.3]
-    # TODO: Search from bigger ranges to smaller ones, diving by 2 each time it's cut (binary search)
-    # for base_order_size in order_array:
-    #     for safety_order_size in order_array:
-    #         for target_profit_perc in target_profit_perc_array:
-    #             for price_deviation_safety_orders in price_deviation_safety_orders_array:
-    #                 for safety_order_volume_scale in safety_order_volume_scale_array:
-    #                     for safety_order_step_scale in safety_order_step_scale_array:
-    #                         i += 1
-    #                         config = Config()
-    #                         config.base_order_size=base_order_size
-    #                         config.safety_order_size=safety_order_size
-    #                         config.target_profit_perc=target_profit_perc                                
-    #                         config.price_deviation_safety_orders=price_deviation_safety_orders
-    #                         config.safety_order_volume_scale=safety_order_volume_scale
-    #                         config.safety_order_step_scale=safety_order_step_scale                         
-                             
-    #                         total = run(prices, dates, config)
-    #                         totals.append(int(total))
-    #                         book[int(total)] = config
+    order_array = [10, 15]
+    target_profit_perc_array = [1, 10]
+    price_deviation_safety_orders_array = [0.5, 1]
+    safety_order_volume_scale_array = [1.5]
+    safety_order_step_scale_array = [0.9]
 
-    #                         print("%d/9720 : $%.2f" % (i, total))
+    total_combinations = len(order_array)**2 * len(target_profit_perc_array) * len(price_deviation_safety_orders_array) * len(safety_order_volume_scale_array) * len(safety_order_step_scale_array)
+
+    for base_order_size in order_array:
+        for safety_order_size in order_array:
+            for target_profit_perc in target_profit_perc_array:
+                for price_deviation_safety_orders in price_deviation_safety_orders_array:
+                    for safety_order_volume_scale in safety_order_volume_scale_array:
+                        for safety_order_step_scale in safety_order_step_scale_array:
+                            i += 1
+                            config = Config()
+                            config.base_order_size=base_order_size
+                            config.safety_order_size=safety_order_size
+                            config.target_profit_perc=target_profit_perc                                
+                            config.price_deviation_safety_orders=price_deviation_safety_orders
+                            config.safety_order_volume_scale=safety_order_volume_scale
+                            config.safety_order_step_scale=safety_order_step_scale                         
+                             
+                            total = run(prices, dates, config)
+                            totals.append(int(total))
+                            book[int(total)] = config
+
+                            print("%d/%d : $%.2f" % (i, total_combinations, total))
 
     # Uncomment this to run it once with the default parameters set in Config
-    config = Config()
-    total = run(prices, dates, config)
-    totals.append(int(total))
-    book[int(total)] = config
+    # config = Config(15, 15, 10, 0.5, 2, 0.9)
+    # total = run(prices, dates, config)
+    # totals.append(int(total))
+    # book[int(total)] = config
 
-    #print(totals)
-    print("Max Total = $%d" % max(totals))
-    best = book[max(totals)]
-    print("Base Order Size: $%.2f" % best.base_order_size)
-    print("Safety Order Size: $%.2f" % best.safety_order_size)
-    print("Target Profit Perc: %.1f%%" % best.target_profit_perc)
-    print("Price Deviation Safety Orders: %.2f" % best.price_deviation_safety_orders)
-    print("Safety Order Volume Scale: %.2f" % best.safety_order_volume_scale)
-    print("Safety Order Step Scale: %.2f" % best.safety_order_step_scale)
-    print("Safety Trades Count: %d" % best.safety_trades_count)
-    print("Number of closed deals: %d" % best.closed_deals_count)
-    print("Max Safety Order Price Deviation: %.2f%%" % best.max_safety_order_price_deviation())
-    print("Max Real Safety Order Price Deviation: %.2f%%" % best.max_real_safety_order_price_deviation)
-    print("Max Price Deviation: %.2f%%" % best.max_price_deviation)
-    print("Top to Bottom Price Deviation: %.2f%%" % (100 - (min(prices) * 100 / max(prices))))
-
-    # print(i)
+    print("\n-------------------------------------")
+    for total in sorted(totals, reverse=True)[0:10]:
+        print("Total = $%d" % total)
+        print(book[total])

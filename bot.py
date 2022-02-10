@@ -17,20 +17,24 @@ class Config:
             self.safety_trades_count=0
             self.closed_deals_count=0
             self.max_price_deviation=0
-            self.max_real_safety_order_price_deviation=0
+            self.max_price_deviation_date_max=None
+            self.max_price_deviation_date_min=None
+            self.max_real_safety_order_price_deviation=0.0
+            self.max_local_price_deviation=0.0
         
     def __str__(self) -> str:
-        print("Base Order Size: $%.2f" % self.base_order_size)
-        print("Safety Order Size: $%.2f" % self.safety_order_size)
-        print("Target Profit Perc: %.1f%%" % self.target_profit_perc)
-        print("Price Deviation Safety Orders: %.2f" % self.price_deviation_safety_orders)
-        print("Safety Order Volume Scale: %.2f" % self.safety_order_volume_scale)
-        print("Safety Order Step Scale: %.2f" % self.safety_order_step_scale)
-        print("Safety Trades Count: %d" % self.safety_trades_count)
-        print("Number of closed deals: %d" % self.closed_deals_count)
-        print("Max Safety Order Price Deviation: %.2f%%" % self.max_safety_order_price_deviation())
-        print("Max Real Safety Order Price Deviation: %.2f%%" % self.max_real_safety_order_price_deviation)
-        print("Max Price Deviation: %.2f%%" % self.max_price_deviation)
+        return ("Base Order Size: $%.2f\n" % self.base_order_size +
+        "Safety Order Size: $%.2f\n" % self.safety_order_size +
+        "Target Profit Perc: %.1f%%\n" % self.target_profit_perc +
+        "Price Deviation Safety Orders: %.2f\n" % self.price_deviation_safety_orders +
+        "Safety Order Volume Scale: %.2f\n" % self.safety_order_volume_scale + 
+        "Safety Order Step Scale: %.2f\n" % self.safety_order_step_scale +
+        "Safety Trades Count: %d\n" % self.safety_trades_count +
+        "Number of closed deals: %d\n" % self.closed_deals_count +
+        "Max Safety Order Price Deviation: %.2f%%\n" % self.max_safety_order_price_deviation() +
+        "Max Real Safety Order Price Deviation: %.2f%%\n" % self.max_real_safety_order_price_deviation +
+        "Max Price Deviation: %.2f%% (%s - %s)\n" % (self.max_price_deviation, datetime.fromtimestamp(self.max_price_deviation_date_max), datetime.fromtimestamp(self.max_price_deviation_date_min)) +
+        "Max Local Price Deviation: %.2f%%\n" % self.max_local_price_deviation)
 
     def max_safety_order_price_deviation(self):
         i = 1
@@ -80,9 +84,11 @@ class Bot:
         amount_btc = self.buy(order_volume_usd, prices[start_index], dates[start_index])
         bought_price = prices[start_index]
         self.initial_buy_price = bought_price
+        max_price = min_price = bought_price
         safety_trades_count = 0
         price_deviation_safety_orders = self.config.price_deviation_safety_orders
         all_prices = [bought_price]
+        temporal_index_max_deviation = start_index
 
         # after the first buy, the next order will be the first safety one
         order_volume_usd = self.config.safety_order_size
@@ -94,6 +100,19 @@ class Bot:
                 continue
 
             all_prices.append(price)
+
+            if max_price < price:
+                max_price = price
+                min_price = price
+                temporal_index_max_deviation = index
+
+            if min_price > price:
+                min_price = price
+                deviation = self.calculate_deviation(min_price, max_price)
+                if self.config.max_price_deviation < deviation:
+                    self.config.max_price_deviation_date_max = dates[temporal_index_max_deviation]
+                    self.config.max_price_deviation_date_min = dates[index]
+                    self.config.max_price_deviation = deviation
             
             current_value_usd = amount_btc * price
             #print("Current value in USD=$%.2f | Price=$%.2f" %(current_value_usd, price))
@@ -106,10 +125,10 @@ class Bot:
                     print("Total Volume USD (Total Spent)=$%.2f" %(total_volume_usd))
                 amount_usd = self.sell(amount_btc, price, dates[index])
                 self.config.safety_trades_count = max(self.config.safety_trades_count, safety_trades_count)
-                deviation = self.calculate_deviation(min(all_prices), self.initial_buy_price)
                 safety_orders_deviation = self.calculate_deviation(self.last_buy_price, self.initial_buy_price)
+                deviation = self.calculate_deviation(min(all_prices), self.initial_buy_price)
+                self.config.max_local_price_deviation = max(self.config.max_local_price_deviation, deviation)
                 self.config.max_real_safety_order_price_deviation = max(self.config.max_real_safety_order_price_deviation, safety_orders_deviation)
-                self.config.max_price_deviation = max(self.config.max_price_deviation, deviation)
                 self.config.closed_deals_count += 1
                 if self.verbose:
                     print("Profit=$%f | Expected Profit=$%f" %(profit, expected_profit))
