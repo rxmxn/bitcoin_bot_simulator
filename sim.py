@@ -42,10 +42,11 @@ if __name__ == '__main__':
     #print(datetime.fromtimestamp(dates[len(prices)]).date())
 
     totals = list[int]() 
+    price_deviations = list[float]() 
     book = dict[int, Config]()
+    book_low_risk = dict[int, Config]()
     i = 0
 
-    #TODO: need to store the less risky ones as well
     #TODO: Search from bigger ranges to smaller ones, diving by 2 each time it's cut (binary search)
 
     # order_array = [10, 15, 20]
@@ -76,13 +77,20 @@ if __name__ == '__main__':
                                 safety_order_volume_scale=safety_order_volume_scale,
                                 safety_order_step_scale=safety_order_step_scale)
                              
-                            total = run(prices, dates, config)
-                            totals.append(int(total))
-                            book[int(total)] = config
+                            config.total = run(prices, dates, config)
+                            totals.append(int(config.total))
+                            book[int(config.total)] = config
+                            price_deviation = config.max_safety_order_price_deviation()
+                            book_low_risk[price_deviation] = config
+                            price_deviations.append(price_deviation)
 
-                            print("%d/%d : $%.2f" % (i, total_combinations, total))
+                            print("%d/%d : $%.2f" % (i, total_combinations, config.total))
+
+    print("\n-------------------------------------")
+    for deviation in reversed(sorted(price_deviations, reverse=True)[0:10]):
+        print(book_low_risk[deviation])
 
     print("\n-------------------------------------")
     for total in reversed(sorted(totals, reverse=True)[0:10]):
-        print("Total = $%d" % total)
         print(book[total])
+

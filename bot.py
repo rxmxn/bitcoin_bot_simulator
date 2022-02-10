@@ -21,9 +21,11 @@ class Config:
             self.max_price_deviation_date_min=None
             self.max_real_safety_order_price_deviation=0.0
             self.max_local_price_deviation=0.0
+            self.total=0
         
     def __str__(self) -> str:
-        return ("Base Order Size: $%.2f\n" % self.base_order_size +
+        return ("Total: $%d\n" % self.total +
+        "Base Order Size: $%.2f\n" % self.base_order_size +
         "Safety Order Size: $%.2f\n" % self.safety_order_size +
         "Target Profit Perc: %.1f%%\n" % self.target_profit_perc +
         "Price Deviation Safety Orders: %.2f\n" % self.price_deviation_safety_orders +
@@ -35,6 +37,7 @@ class Config:
         "Max Real Safety Order Price Deviation: %.2f%%\n" % self.max_real_safety_order_price_deviation +
         "Max Price Deviation: %.2f%% (%s - %s)\n" % (self.max_price_deviation, datetime.fromtimestamp(self.max_price_deviation_date_max), datetime.fromtimestamp(self.max_price_deviation_date_min)) +
         "Max Local Price Deviation: %.2f%%\n" % self.max_local_price_deviation)
+
 
     def max_safety_order_price_deviation(self):
         i = 1
