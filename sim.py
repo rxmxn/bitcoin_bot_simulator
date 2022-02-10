@@ -41,14 +41,13 @@ if __name__ == '__main__':
     prices = df.iloc[:end_index, 1]
     #print(datetime.fromtimestamp(dates[len(prices)]).date())
 
-    totals = []
+    totals = list[int]() 
     book = dict[int, Config]()
     i = 0
 
     #TODO: need to store the less risky ones as well
-
-    # Comment this to run it quicly with just one simulation
     #TODO: Search from bigger ranges to smaller ones, diving by 2 each time it's cut (binary search)
+
     # order_array = [10, 15, 20]
     # target_profit_perc_array = [0.1, 0.5, 1, 1.5, 2, 2.5, 3, 5, 10]
     # price_deviation_safety_orders_array = [0.5, 1, 1.5, 2]
@@ -69,13 +68,13 @@ if __name__ == '__main__':
                     for safety_order_volume_scale in safety_order_volume_scale_array:
                         for safety_order_step_scale in safety_order_step_scale_array:
                             i += 1
-                            config = Config()
-                            config.base_order_size=base_order_size
-                            config.safety_order_size=safety_order_size
-                            config.target_profit_perc=target_profit_perc                                
-                            config.price_deviation_safety_orders=price_deviation_safety_orders
-                            config.safety_order_volume_scale=safety_order_volume_scale
-                            config.safety_order_step_scale=safety_order_step_scale                         
+                            config = Config(
+                                base_order_size=base_order_size,
+                                safety_order_size=safety_order_size,
+                                target_profit_perc=target_profit_perc,
+                                price_deviation_safety_orders=price_deviation_safety_orders,
+                                safety_order_volume_scale=safety_order_volume_scale,
+                                safety_order_step_scale=safety_order_step_scale)
                              
                             total = run(prices, dates, config)
                             totals.append(int(total))
@@ -83,13 +82,7 @@ if __name__ == '__main__':
 
                             print("%d/%d : $%.2f" % (i, total_combinations, total))
 
-    # Uncomment this to run it once with the default parameters set in Config
-    # config = Config(15, 15, 10, 0.5, 2, 0.9)
-    # total = run(prices, dates, config)
-    # totals.append(int(total))
-    # book[int(total)] = config
-
     print("\n-------------------------------------")
-    for total in sorted(totals, reverse=True)[0:10]:
+    for total in reversed(sorted(totals, reverse=True)[0:10]):
         print("Total = $%d" % total)
         print(book[total])
