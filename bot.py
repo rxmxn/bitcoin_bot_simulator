@@ -83,14 +83,19 @@ class Bot:
         return 100 - (last_price * 100 / initial_price)
 
     def simulate(self, prices, dates, start_index):
+        calculate_deviation = self.calculate_deviation
+        buy = self.buy
+        sell = self.sell
+
         order_volume_usd = total_volume_usd = self.config.base_order_size
-        amount_btc = self.buy(order_volume_usd, prices[start_index], dates[start_index])
+        amount_btc = buy(order_volume_usd, prices[start_index], dates[start_index])
         bought_price = prices[start_index]
         self.initial_buy_price = bought_price
         max_price = min_price = bought_price
         safety_trades_count = 0
         price_deviation_safety_orders = self.config.price_deviation_safety_orders
         all_prices = [bought_price]
+        all_prices_append = all_prices.append
         temporal_index_max_deviation = start_index
 
         # after the first buy, the next order will be the first safety one
@@ -102,7 +107,7 @@ class Bot:
             if index == start_index:
                 continue
 
-            all_prices.append(price)
+            all_prices_append(price)
 
             if max_price < price:
                 max_price = price
@@ -111,7 +116,7 @@ class Bot:
 
             if min_price > price:
                 min_price = price
-                deviation = self.calculate_deviation(min_price, max_price)
+                deviation = calculate_deviation(min_price, max_price)
                 if self.config.max_price_deviation < deviation:
                     self.config.max_price_deviation_date_max = dates[temporal_index_max_deviation]
                     self.config.max_price_deviation_date_min = dates[index]
@@ -126,10 +131,10 @@ class Bot:
             if profit >= expected_profit:
                 if self.verbose:
                     print("Total Volume USD (Total Spent)=$%.2f" %(total_volume_usd))
-                amount_usd = self.sell(amount_btc, price, dates[index])
+                amount_usd = sell(amount_btc, price, dates[index])
                 self.config.safety_trades_count = max(self.config.safety_trades_count, safety_trades_count)
-                safety_orders_deviation = self.calculate_deviation(self.last_buy_price, self.initial_buy_price)
-                deviation = self.calculate_deviation(min(all_prices), self.initial_buy_price)
+                safety_orders_deviation = calculate_deviation(self.last_buy_price, self.initial_buy_price)
+                deviation = calculate_deviation(min(all_prices), self.initial_buy_price)
                 self.config.max_local_price_deviation = max(self.config.max_local_price_deviation, deviation)
                 self.config.max_real_safety_order_price_deviation = max(self.config.max_real_safety_order_price_deviation, safety_orders_deviation)
                 self.config.closed_deals_count += 1
@@ -139,7 +144,7 @@ class Bot:
 
             if price <= bought_price  * ( 1 - price_deviation_safety_orders / 100):
                 if order_volume_usd <= self.total_usd:
-                    amount_btc += self.buy(order_volume_usd, price, dates[index])
+                    amount_btc += buy(order_volume_usd, price, dates[index])
                     bought_price = price
                     total_volume_usd += order_volume_usd
                     order_volume_usd *= self.config.safety_order_volume_scale
@@ -155,11 +160,13 @@ class Bot:
 
     def execute(self, prices, dates):
         index = -1
+        simulate = self.simulate
+        verbose = self.verbose
         while True:
-            index, usd_amount = self.simulate(prices[index+1:], dates[index+1:], index+1)
+            index, usd_amount = simulate(prices[index+1:], dates[index+1:], index+1)
             if index == None:
                 break
-            if self.verbose:
+            if verbose:
                 print("Amount USD returned = $%f" % usd_amount)
                 print("Total USD = $%f" % self.total_usd)
                 print("Index=%d" %index)
