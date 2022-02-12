@@ -4,7 +4,7 @@ from bot import Bot, Config
 from timewrapper import timeme
 
 # Returns the index of the date specific to the number of desired days in the future
-def find_index(dates, years=0):
+def find_index(dates: list[int], years:int=0) -> int:
 
     start_date = datetime.fromtimestamp(dates[0])
     if years > 0:
@@ -23,7 +23,7 @@ def find_index(dates, years=0):
             return i
 
 @timeme
-def run(prices, dates, config, verbose = False):
+def run(prices:list[float], dates:list[int], config:Config, verbose:bool = False) -> float:
     bot = Bot(config)
 
     bot.execute(prices, dates)
@@ -41,7 +41,7 @@ def run(prices, dates, config, verbose = False):
 
 
 @timeme
-def read_csv(years=0):
+def read_csv(years:int=0):
     df = pd.read_csv('btcalphaUSD.csv')
     dates = df.iloc[:, 0]
     end_index = find_index(dates, years)
@@ -109,3 +109,5 @@ if __name__ == '__main__':
     print("\n-------------------------------------")
     for total in reversed(sorted(totals, reverse=True)[0:10]):
         print(book[total])
+
+#TODO: for a single simulation I could chart how it bevahes in time
