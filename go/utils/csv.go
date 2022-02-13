@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func ReadCsv(fileName string) ([]int64, []float32) {
+func ReadCsv(fileName string) ([]int64, []float64) {
 	start := time.Now()
 	fmt.Println("Reading CSV File")
 	f, err := os.Open(fileName)
@@ -33,9 +33,9 @@ func ReadCsv(fileName string) ([]int64, []float32) {
 	return dates, prices
 }
 
-func extractData(data [][]string) ([]int64, []float32) {
+func extractData(data [][]string) ([]int64, []float64) {
 	var dates []int64
-	var prices []float32
+	var prices []float64
 	for i, line := range data {
 		if i > 0 {
 			for j, field := range line {
@@ -50,7 +50,7 @@ func extractData(data [][]string) ([]int64, []float32) {
 					if err != nil {
 						log.Fatal(err)
 					}
-					prices = append(prices, float32(price))
+					prices = append(prices, float64(price))
 				}
 			}
 		}
