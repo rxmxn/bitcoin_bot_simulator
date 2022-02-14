@@ -16,10 +16,12 @@ def find_index(dates: list[int], years:int=0) -> int:
     #print("Total Time: %s" % (datetime.fromtimestamp(dates[len(dates)-1]) - datetime.fromtimestamp(dates[0])))
 
     if years <= 0:
+        print("index = %d" % (len(dates)-1))
         return len(dates)-1
 
     for i, d in enumerate(dates):
         if datetime.fromtimestamp(d).date() == end_date.date():
+            print("index = %d" % i)
             return i
 
 @timeme
@@ -110,4 +112,15 @@ if __name__ == '__main__':
     for total in reversed(sorted(totals, reverse=True)[0:10]):
         print(book[total])
 
+    # config = Config(
+    #     base_order_size=10.0,
+    #     safety_order_size=20.0,
+    #     target_profit_perc=1.0,
+    #     price_deviation_safety_orders=0.5,
+    #     safety_order_volume_scale=2.0,
+    #     safety_order_step_scale=1.2)
+    # bot = Bot(config, True)
+
+    # _, value =bot.simulate(prices, dates, 0)
+    # print(value)
 #TODO: for a single simulation I could chart how it bevahes in time

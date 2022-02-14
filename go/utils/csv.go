@@ -28,7 +28,7 @@ func ReadCsv(fileName string) ([]int64, []float64) {
 
 	dates, prices := extractData(data)
 
-	fmt.Println("Reading CSV duration in seconds: ", time.Since(start))
+	fmt.Println("Reading CSV duration: ", time.Since(start))
 
 	return dates, prices
 }

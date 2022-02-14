@@ -23,7 +23,7 @@ func (bot *Bot) Buy(amount_usd float64, price float64, date int64) float64 {
 	bot.TotalUsd -= amount_usd
 
 	if bot.Verbose {
-		fmt.Printf("Buying %.2f bitcoins at $%.2f with $%.2f on %s\n", amount_btc, price, amount_usd, utils.DateToString(date))
+		fmt.Printf("Buying %f bitcoins at $%.2f with $%.2f on %s\n", amount_btc, price, amount_usd, utils.DateTimeToString(date))
 	}
 
 	return amount_btc
@@ -35,7 +35,7 @@ func (bot *Bot) Sell(amount_btc float64, price float64, date int64) float64 {
 	bot.TotalBtc -= amount_btc
 
 	if bot.Verbose {
-		fmt.Printf("Selling %.2f bitcoins at $%.2f with $%.2f on %s\n", amount_btc, price, amount_usd, utils.DateToString(date))
+		fmt.Printf("Selling %f bitcoins at $%.2f with $%.2f on %s\n", amount_btc, price, amount_usd, utils.DateTimeToString(date))
 	}
 
 	return amount_usd
@@ -49,26 +49,25 @@ func (bot *Bot) CalculateDeviation(last_price float64, initial_price float64) fl
 	return 100 - (last_price * 100 / initial_price)
 }
 
-func (bot *Bot) Simulate(prices []float64, dates []int64, start_index int) (int, float64) {
+func (bot *Bot) Simulate(prices []float64, dates []int64) (int, float64) {
 	order_volume_usd := bot.Conf.BaseOrderSize
 	total_volume_usd := bot.Conf.BaseOrderSize
 
-	amount_btc := bot.Buy(order_volume_usd, prices[start_index], dates[start_index])
-	bought_price := prices[start_index]
+	amount_btc := bot.Buy(order_volume_usd, prices[0], dates[0])
+	bought_price := prices[0]
 	bot.InitialBuyPrice = bought_price
 	max_price := bought_price
 	min_price := bought_price
 	safety_trades_count := 0
 
-	price_deviation_safety_orders := bot.Conf.MaxRealSafetyOrderPriceDeviation
+	price_deviation_safety_orders := bot.Conf.PriceDeviationSafetyOrders
 	all_prices := []float64{bought_price}
-	temporal_index_max_deviation := start_index
+	temporal_index_max_deviation := 0
 
 	order_volume_usd = bot.Conf.SafetyOrderSize
 
 	for index, price := range prices {
-		index += start_index
-		if index == start_index {
+		if index == 0 {
 			continue
 		}
 
@@ -136,13 +135,15 @@ func (bot *Bot) Simulate(prices []float64, dates []int64, start_index int) (int,
 }
 
 func (bot *Bot) Execute(prices []float64, dates []int64) {
-	index := -1
+	last_price := prices[len(prices)-1]
+
 	for {
-		index += 1
-		index, usd_amount := bot.Simulate(prices[index:], dates[index:], index)
+		index, usd_amount := bot.Simulate(prices, dates)
 		if index == -1 {
 			break
 		}
+		dates = dates[index+1:]
+		prices = prices[index+1:]
 		if bot.Verbose {
 			fmt.Printf("Amount USD returned = $%f\n", usd_amount)
 			fmt.Printf("Total USD = $%f\n", bot.TotalUsd)
@@ -150,6 +151,5 @@ func (bot *Bot) Execute(prices []float64, dates []int64) {
 		}
 	}
 
-	last_price := prices[len(prices)-1]
 	bot.Conf.Total = bot.TotalUsd + bot.TotalBtc*last_price
 }

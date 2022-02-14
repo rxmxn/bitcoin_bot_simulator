@@ -13,6 +13,10 @@ func DateToString(date int64) string {
 	return time.Unix(date, 0).Format(layoutUS)
 }
 
+func DateTimeToString(date int64) string {
+	return time.Unix(date, 0).Format(time.RFC1123)
+}
+
 func FilterByRange(start, end time.Time, dates []int64, prices []float64) ([]int64, []float64) {
 	startUnix := start.Unix()
 	endUnix := end.Unix()

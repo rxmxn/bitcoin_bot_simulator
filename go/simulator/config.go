@@ -34,6 +34,7 @@ func (config *Config) MaxSafetyOrderPriceDeviation() float64 {
 
 func (config *Config) ToString() string {
 	return strings.Join([]string{
+		fmt.Sprint("******************************"),
 		fmt.Sprintf("Total: $%.2f", config.Total),
 		fmt.Sprintf("Base Order Size: $%.2f", config.BaseOrderSize),
 		fmt.Sprintf("Safety Order Size: $%.2f", config.SafetyOrderSize),
@@ -43,8 +44,10 @@ func (config *Config) ToString() string {
 		fmt.Sprintf("Safety Order Step Scale: %.2f", config.SafetyOrderStepScale),
 		fmt.Sprintf("Safety Trades Count: %d", config.SafetyTradesCount),
 		fmt.Sprintf("Closed Deals Count: %d", config.ClosedDealsCount),
-		fmt.Sprintf("Max Price Deviation: %.2f from %s - %s", config.MaxPriceDeviation, utils.DateToString(config.MaxPriceDeviationDateMax), utils.DateToString(config.MaxPriceDeviationDateMin)),
-		fmt.Sprintf("Max Real Safety Order Price Deviation: %.2f", config.MaxRealSafetyOrderPriceDeviation),
-		fmt.Sprintf("Max Local Price Deviation: %.2f", config.MaxLocalPriceDeviation),
+		fmt.Sprintf("Max Safety Order Price Deviation: %.2f%%", config.MaxSafetyOrderPriceDeviation()),
+		fmt.Sprintf("Max Real Safety Order Price Deviation: %.2f%%", config.MaxRealSafetyOrderPriceDeviation),
+		fmt.Sprintf("Max Price Deviation: %.2f%% from %s - %s", config.MaxPriceDeviation, utils.DateToString(config.MaxPriceDeviationDateMax), utils.DateToString(config.MaxPriceDeviationDateMin)),
+		fmt.Sprintf("Max Local Price Deviation: %.2f%%", config.MaxLocalPriceDeviation),
+		fmt.Sprint("******************************"),
 	}, "\n")
 }
