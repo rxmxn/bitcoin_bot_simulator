@@ -10,10 +10,22 @@ import (
 func Simulate(prices []float64, dates []int64) {
 	start := time.Now()
 
-	totals := []float64{}
-	//price_deviations := []float64{}
-	book := map[float64]Config{}
-	//book_low_risk := map[float64]Config{}
+	totals := []int{}
+	book := map[int]Config{}
+	price_deviations_5 := []int{}
+	book_risk_5 := map[int]Config{}
+	price_deviations_10 := []int{}
+	book_risk_10 := map[int]Config{}
+	price_deviations_20 := []int{}
+	book_risk_20 := map[int]Config{}
+	price_deviations_30 := []int{}
+	book_risk_30 := map[int]Config{}
+	price_deviations_40 := []int{}
+	book_risk_40 := map[int]Config{}
+	price_deviations_50 := []int{}
+	book_risk_50 := map[int]Config{}
+	price_deviations_60 := []int{}
+	book_risk_60 := map[int]Config{}
 	i := 0
 
 	order_array := []float64{10, 20}
@@ -46,8 +58,8 @@ func Simulate(prices []float64, dates []int64) {
 								TotalBtc:   0,
 							}
 							bot.Execute(prices, dates)
-							totals = append(totals, bot.Conf.Total)
-							book[bot.Conf.Total] = bot.Conf
+							totals = append(totals, int(bot.Conf.Total))
+							book[int(bot.Conf.Total)] = bot.Conf
 
 							fmt.Printf("%d/%d : $%.2f\n", i, total_combinations, bot.Conf.Total)
 						}
@@ -57,23 +69,77 @@ func Simulate(prices []float64, dates []int64) {
 		}
 	}
 
-	sort.Float64s(totals)
+	sort.Ints(totals)
 
-	// for _, total := range totals {
-	// 	a := book[total]
-	// 	price_deviation := a.MaxSafetyOrderPriceDeviation()
-	// 	if price_deviation > 4 && price_deviation < 6 {
-	// 		price_deviations = append(price_deviations, price_deviation)
-	// 		book_low_risk[price_deviation] = a
-	// 	}
-	// }
+	for _, total := range totals {
+		a := book[total]
+		price_deviation := a.MaxSafetyOrderPriceDeviation()
+		if price_deviation > 4 && price_deviation < 6 {
+			key := price_deviation * a.Total
+			price_deviations_5 = append(price_deviations_5, int(key))
+			book_risk_5[int(key)] = a
+		} else if price_deviation > 9 && price_deviation < 11 {
+			key := price_deviation * a.Total
+			price_deviations_10 = append(price_deviations_10, int(key))
+			book_risk_10[int(key)] = a
+		} else if price_deviation > 19 && price_deviation < 21 {
+			key := price_deviation * a.Total
+			price_deviations_20 = append(price_deviations_20, int(key))
+			book_risk_20[int(key)] = a
+		} else if price_deviation > 29 && price_deviation < 31 {
+			key := price_deviation * a.Total
+			price_deviations_30 = append(price_deviations_30, int(key))
+			book_risk_30[int(key)] = a
+		} else if price_deviation > 39 && price_deviation < 41 {
+			key := price_deviation * a.Total
+			price_deviations_40 = append(price_deviations_40, int(key))
+			book_risk_40[int(key)] = a
+		} else if price_deviation > 49 && price_deviation < 51 {
+			key := price_deviation * a.Total
+			price_deviations_50 = append(price_deviations_50, int(key))
+			book_risk_50[int(key)] = a
+		} else if price_deviation > 59 && price_deviation < 61 {
+			key := price_deviation * a.Total
+			price_deviations_60 = append(price_deviations_60, int(key))
+			book_risk_60[int(key)] = a
+		}
+	}
 
-	// fmt.Println("Price Deviation around 20%")
-	// //price_deviations = price_deviations[len(price_deviations)-3:]
-	// for _, pd := range price_deviations {
-	// 	a := book_low_risk[pd]
-	// 	fmt.Print(a.ToString())
-	// }
+	if len(price_deviations_5) > 0 {
+		fmt.Println("\nPrice Deviation around 5%")
+		a := book_risk_5[price_deviations_5[len(price_deviations_5)-1]]
+		fmt.Print(a.ToString())
+	}
+	if len(price_deviations_10) > 0 {
+		fmt.Println("\nPrice Deviation around 10%")
+		a := book_risk_10[price_deviations_10[len(price_deviations_10)-1]]
+		fmt.Print(a.ToString())
+	}
+	if len(price_deviations_20) > 0 {
+		fmt.Println("\nPrice Deviation around 20%")
+		a := book_risk_20[price_deviations_20[len(price_deviations_20)-1]]
+		fmt.Print(a.ToString())
+	}
+	if len(price_deviations_30) > 0 {
+		fmt.Println("\nPrice Deviation around 30%")
+		a := book_risk_30[price_deviations_30[len(price_deviations_30)-1]]
+		fmt.Print(a.ToString())
+	}
+	if len(price_deviations_40) > 0 {
+		fmt.Println("\nPrice Deviation around 40%")
+		a := book_risk_40[price_deviations_40[len(price_deviations_40)-1]]
+		fmt.Print(a.ToString())
+	}
+	if len(price_deviations_50) > 0 {
+		fmt.Println("\nPrice Deviation around 50%")
+		a := book_risk_50[price_deviations_50[len(price_deviations_50)-1]]
+		fmt.Print(a.ToString())
+	}
+	if len(price_deviations_60) > 0 {
+		fmt.Println("\nPrice Deviation around 60%")
+		a := book_risk_60[price_deviations_60[len(price_deviations_60)-1]]
+		fmt.Print(a.ToString())
+	}
 
 	fmt.Println("\nBest performers")
 	totals = totals[len(totals)-3:]
