@@ -5,6 +5,8 @@ import (
 	"math"
 	"sort"
 	"time"
+
+	"github.com/rxmxn/bitcoin_bot_simulator/go/utils"
 )
 
 func Simulate(prices []float64, dates []int64) {
@@ -12,27 +14,18 @@ func Simulate(prices []float64, dates []int64) {
 
 	totals := []int{}
 	book := map[int]Config{}
-	price_deviations_5 := []int{}
-	book_risk_5 := map[int]Config{}
-	price_deviations_10 := []int{}
-	book_risk_10 := map[int]Config{}
-	price_deviations_20 := []int{}
-	book_risk_20 := map[int]Config{}
-	price_deviations_30 := []int{}
-	book_risk_30 := map[int]Config{}
-	price_deviations_40 := []int{}
-	book_risk_40 := map[int]Config{}
-	price_deviations_50 := []int{}
-	book_risk_50 := map[int]Config{}
-	price_deviations_60 := []int{}
-	book_risk_60 := map[int]Config{}
+	data_array := []string{}
 	i := 0
 
 	order_array := createFloatArray(10.0, 20.0, 5.0)
-	target_profit_perc_array := createFloatArray(0.1, 2.0, 0.1)
-	price_deviation_safety_orders_array := createFloatArray(0.5, 5.0, 0.1)
-	safety_order_volume_scale_array := createFloatArray(1.0, 2.0, 0.1)
-	safety_order_step_scale_array := createFloatArray(0.8, 1.5, 0.1)
+	//target_profit_perc_array := createFloatArray(0.1, 2.0, 0.1)
+	target_profit_perc_array := createFloatArray(0.1, 2.0, 1)
+	//price_deviation_safety_orders_array := createFloatArray(0.5, 5.0, 0.1)
+	price_deviation_safety_orders_array := createFloatArray(0.5, 5.0, 1)
+	//safety_order_volume_scale_array := createFloatArray(1.0, 2.0, 0.1)
+	safety_order_volume_scale_array := createFloatArray(1.0, 2.0, 0.5)
+	//safety_order_step_scale_array := createFloatArray(0.8, 1.5, 0.1)
+	safety_order_step_scale_array := createFloatArray(0.8, 1.5, 0.5)
 
 	total_combinations := int(math.Pow(float64(len(order_array)), 2)) * len(target_profit_perc_array) * len(price_deviation_safety_orders_array) * len(safety_order_volume_scale_array) * len(safety_order_step_scale_array)
 
@@ -71,6 +64,46 @@ func Simulate(prices []float64, dates []int64) {
 
 	sort.Ints(totals)
 
+	findPriceDeviations(totals, book, 1)
+
+	fmt.Println("\nBest performers")
+	totals = totals[len(totals)-10:]
+	for _, total := range totals {
+		a := book[total]
+		fmt.Print(a.ToString())
+		data_array = append(data_array, a.ToString())
+	}
+
+	utils.SaveToFile(data_array)
+
+	fmt.Println("\nSimulation execution duration: ", time.Since(start))
+}
+
+func createFloatArray(start, end, step float64) []float64 {
+	array := []float64{}
+	for i := start; i <= end; i += step {
+		array = append(array, float64(i))
+	}
+
+	return array
+}
+
+func findPriceDeviations(totals []int, book map[int]Config, number_elements int) {
+	price_deviations_5 := []int{}
+	book_risk_5 := map[int]Config{}
+	price_deviations_10 := []int{}
+	book_risk_10 := map[int]Config{}
+	price_deviations_20 := []int{}
+	book_risk_20 := map[int]Config{}
+	price_deviations_30 := []int{}
+	book_risk_30 := map[int]Config{}
+	price_deviations_40 := []int{}
+	book_risk_40 := map[int]Config{}
+	price_deviations_50 := []int{}
+	book_risk_50 := map[int]Config{}
+	price_deviations_60 := []int{}
+	book_risk_60 := map[int]Config{}
+
 	for _, total := range totals {
 		a := book[total]
 		price_deviation := a.MaxSafetyOrderPriceDeviation()
@@ -107,55 +140,37 @@ func Simulate(prices []float64, dates []int64) {
 
 	if len(price_deviations_5) > 0 {
 		fmt.Println("\nPrice Deviation around 5%")
-		a := book_risk_5[price_deviations_5[len(price_deviations_5)-3]]
+		a := book_risk_5[price_deviations_5[len(price_deviations_5)-number_elements]]
 		fmt.Print(a.ToString())
 	}
 	if len(price_deviations_10) > 0 {
 		fmt.Println("\nPrice Deviation around 10%")
-		a := book_risk_10[price_deviations_10[len(price_deviations_10)-3]]
+		a := book_risk_10[price_deviations_10[len(price_deviations_10)-number_elements]]
 		fmt.Print(a.ToString())
 	}
 	if len(price_deviations_20) > 0 {
 		fmt.Println("\nPrice Deviation around 20%")
-		a := book_risk_20[price_deviations_20[len(price_deviations_20)-3]]
+		a := book_risk_20[price_deviations_20[len(price_deviations_20)-number_elements]]
 		fmt.Print(a.ToString())
 	}
 	if len(price_deviations_30) > 0 {
 		fmt.Println("\nPrice Deviation around 30%")
-		a := book_risk_30[price_deviations_30[len(price_deviations_30)-3]]
+		a := book_risk_30[price_deviations_30[len(price_deviations_30)-number_elements]]
 		fmt.Print(a.ToString())
 	}
 	if len(price_deviations_40) > 0 {
 		fmt.Println("\nPrice Deviation around 40%")
-		a := book_risk_40[price_deviations_40[len(price_deviations_40)-3]]
+		a := book_risk_40[price_deviations_40[len(price_deviations_40)-number_elements]]
 		fmt.Print(a.ToString())
 	}
 	if len(price_deviations_50) > 0 {
 		fmt.Println("\nPrice Deviation around 50%")
-		a := book_risk_50[price_deviations_50[len(price_deviations_50)-3]]
+		a := book_risk_50[price_deviations_50[len(price_deviations_50)-number_elements]]
 		fmt.Print(a.ToString())
 	}
 	if len(price_deviations_60) > 0 {
 		fmt.Println("\nPrice Deviation around 60%")
-		a := book_risk_60[price_deviations_60[len(price_deviations_60)-3]]
+		a := book_risk_60[price_deviations_60[len(price_deviations_60)-number_elements]]
 		fmt.Print(a.ToString())
 	}
-
-	fmt.Println("\nBest performers")
-	totals = totals[len(totals)-10:]
-	for _, total := range totals {
-		a := book[total]
-		fmt.Print(a.ToString())
-	}
-
-	fmt.Println("\nSimulation execution duration: ", time.Since(start))
-}
-
-func createFloatArray(start, end, step float64) []float64 {
-	array := []float64{}
-	for i := start; i <= end; i += step {
-		array = append(array, float64(i))
-	}
-
-	return array
 }

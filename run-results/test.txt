@@ -1,0 +1,255 @@
+Price Deviation around 5%
+******************************
+Total: $30359.56
+Base Order Size: $15.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.30%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.30
+Safety Order Step Scale: 0.90
+Safety Trades Count: 23
+Closed Deals Count: 4307
+Max Safety Order Price Deviation: 5.47%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.30%
+******************************
+Price Deviation around 10%
+******************************
+Total: $19303.48
+Base Order Size: $10.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.20%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.90
+Safety Order Step Scale: 1.10
+Safety Trades Count: 10
+Closed Deals Count: 6229
+Max Safety Order Price Deviation: 9.56%
+Max Real Safety Order Price Deviation: 18.09%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.15%
+******************************
+Price Deviation around 20%
+******************************
+Total: $9660.09
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.60%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.80
+Safety Order Step Scale: 1.30
+Safety Trades Count: 9
+Closed Deals Count: 2706
+Max Safety Order Price Deviation: 19.21%
+Max Real Safety Order Price Deviation: 22.59%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 57.73%
+******************************
+Price Deviation around 30%
+******************************
+Total: $6817.11
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 0.10%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.40
+Safety Order Step Scale: 1.20
+Safety Trades Count: 13
+Closed Deals Count: 61230
+Max Safety Order Price Deviation: 29.10%
+Max Real Safety Order Price Deviation: 26.17%
+Max Price Deviation: 49.44% from January 24, 2017 - January 24, 2017
+Max Local Price Deviation: 49.44%
+******************************
+Price Deviation around 40%
+******************************
+Total: $5293.72
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 0.70%
+Price Deviation Safety Orders: 0.70
+Safety Order Volume Scale: 1.50
+Safety Order Step Scale: 1.30
+Safety Trades Count: 11
+Closed Deals Count: 7670
+Max Safety Order Price Deviation: 39.48%
+Max Real Safety Order Price Deviation: 35.04%
+Max Price Deviation: 51.21% from November 10, 2018 - December 14, 2018
+Max Local Price Deviation: 51.21%
+******************************
+Price Deviation around 50%
+******************************
+Total: $4627.36
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.80%
+Price Deviation Safety Orders: 0.70
+Safety Order Volume Scale: 1.30
+Safety Order Step Scale: 1.20
+Safety Trades Count: 15
+Closed Deals Count: 1662
+Max Safety Order Price Deviation: 50.42%
+Max Real Safety Order Price Deviation: 42.77%
+Max Price Deviation: 56.92% from October 15, 2018 - December 14, 2018
+Max Local Price Deviation: 56.92%
+******************************
+Price Deviation around 60%
+******************************
+Total: $5422.09
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 0.50%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.50
+Safety Order Step Scale: 1.40
+Safety Trades Count: 11
+Closed Deals Count: 11867
+Max Safety Order Price Deviation: 59.24%
+Max Real Safety Order Price Deviation: 47.35%
+Max Price Deviation: 50.29% from January 24, 2017 - January 24, 2017
+Max Local Price Deviation: 50.26%
+******************************
+Best performers
+******************************
+Total: $30019.23
+Base Order Size: $15.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.10%
+Price Deviation Safety Orders: 0.50
+Safety Order Volume Scale: 1.20
+Safety Order Step Scale: 0.90
+Safety Trades Count: 30
+Closed Deals Count: 6518
+Max Safety Order Price Deviation: 4.79%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.15%
+************************************************************                                                                                                  [89/1805]
+Total: $30318.80
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.60%
+Price Deviation Safety Orders: 0.70
+Safety Order Volume Scale: 1.30
+Safety Order Step Scale: 0.90
+Safety Trades Count: 22
+Closed Deals Count: 3015
+Max Safety Order Price Deviation: 6.31%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 57.73%
+************************************************************
+Total: $30359.56
+Base Order Size: $15.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.30%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.30
+Safety Order Step Scale: 0.90
+Safety Trades Count: 23
+Closed Deals Count: 4307
+Max Safety Order Price Deviation: 5.47%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.30%
+************************************************************
+Total: $30953.50
+Base Order Size: $15.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.60%
+Price Deviation Safety Orders: 0.70
+Safety Order Volume Scale: 1.30
+Safety Order Step Scale: 0.90
+Safety Trades Count: 23
+Closed Deals Count: 3211
+Max Safety Order Price Deviation: 6.38%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 57.73%
+************************************************************                                                                                                  [47/1805]
+Total: $31062.87
+Base Order Size: $15.00
+Safety Order Size: $15.00
+Target Profit Perc: 0.90%
+Price Deviation Safety Orders: 0.50
+Safety Order Volume Scale: 1.10
+Safety Order Step Scale: 0.80
+Safety Trades Count: 55
+Closed Deals Count: 8003
+Max Safety Order Price Deviation: 2.50%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.03%
+************************************************************
+Total: $31273.66
+Base Order Size: $10.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.00%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.10
+Safety Order Step Scale: 0.80
+Safety Trades Count: 52
+Closed Deals Count: 8055
+Max Safety Order Price Deviation: 3.00%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.15%
+************************************************************
+Total: $31353.30
+Base Order Size: $15.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.50%
+Price Deviation Safety Orders: 0.70
+Safety Order Volume Scale: 1.30
+Safety Order Step Scale: 0.90
+Safety Trades Count: 23
+Closed Deals Count: 3987
+Max Safety Order Price Deviation: 6.38%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.30%
+************************************************************                                                                                                   [5/1805]
+Total: $31473.57
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 0.90%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.10
+Safety Order Step Scale: 0.80
+Safety Trades Count: 52
+Closed Deals Count: 8443
+Max Safety Order Price Deviation: 3.00%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.03%
+************************************************************
+Total: $32656.43
+Base Order Size: $20.00
+Safety Order Size: $10.00
+Target Profit Perc: 1.60%
+Price Deviation Safety Orders: 0.50
+Safety Order Volume Scale: 1.20
+Safety Order Step Scale: 0.90
+Safety Trades Count: 35
+Closed Deals Count: 2743
+Max Safety Order Price Deviation: 4.87%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 57.89%
+************************************************************
+Total: $33388.89
+Base Order Size: $20.00
+Safety Order Size: $20.00
+Target Profit Perc: 1.40%
+Price Deviation Safety Orders: 0.60
+Safety Order Volume Scale: 1.30
+Safety Order Step Scale: 0.90
+Safety Trades Count: 23
+Closed Deals Count: 3591
+Max Safety Order Price Deviation: 5.47%
+Max Real Safety Order Price Deviation: 18.77%
+Max Price Deviation: 58.30% from January 5, 2017 - January 24, 2017
+Max Local Price Deviation: 58.30%
+******************************
+Simulation execution duration:  9h44m15.171496681s
