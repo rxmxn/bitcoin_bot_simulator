@@ -130,3 +130,5 @@ dmypy.json
 
 # CSV
 *.csv
+
+.DS_STORE
