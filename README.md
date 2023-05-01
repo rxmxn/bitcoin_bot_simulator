@@ -1,7 +1,7 @@
 # Bot Simulator for Bitcoin
 
 The purpose of this repo is to be able to simulate different bot strategies based on Bitcoin historics.
-Since processing all the combinations take so long processing, writing the simulator in different languages. I started with Python but then I decided to try Golang to try to use concurrency.
+Since processing all the combinations take so long processing, writing the simulator in different languages. I started with Python but then I decided to try Golang to improve performance.
 
 ### Files that need to be downloaded
 
